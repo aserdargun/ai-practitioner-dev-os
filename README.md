@@ -264,9 +264,16 @@ This project uses the MIT License (generated in the full repo).
 In Claude Code, enter:
 
 ```
+Execute @SETUP.md for <YOUR_LEVEL>
+```
+or
+```
 Execute @SETUP.md for @STACK.md
 ```
-
+or
+```
+Execute @SETUP.md
+```
 Claude will ask you for the learner level and generate the full learning OS into your fork, customized to the technologies you selected in `STACK.md`.
 
 > Re-running the setup may overwrite generated docs/templates; `.claude/memory/*` should remain append-only
