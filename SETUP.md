@@ -69,6 +69,17 @@ Allowed adaptations (must be enforced by docs + code)
     commands/
       README.md
       catalog.md
+      status.md
+      plan-week.md
+      start-week.md
+      ship-mvp.md
+      harden.md
+      publish.md
+      retro.md
+      evaluate.md
+      adapt-path.md
+      add-best-practice.md
+      debug-learning.md
     skills/
       README.md
       eda-to-insight.md
@@ -273,23 +284,50 @@ Must be ready-to-use, include:
 - How to capture best practices into `.claude/memory/best_practices.md`
 
 ### 4) Commands
-- `.claude/commands/catalog.md` is the source of truth.
-- docs/commands.md should be a friendly guide and link to the catalog.
-Provide a command catalog like:
-- /status
-- /plan-week
-- /start-week
-- /ship-mvp
-- /harden
-- /publish
-- /retro
-- /evaluate
-- /adapt-path
-- /add-best-practice
-- /debug-learning
-Each command must include:
-- purpose, inputs, outputs, when to use, example prompt.
-Also include a “command routing” note: which agent handles which command.
+
+IMPORTANT: Claude Code slash commands require individual `.md` files in `.claude/commands/`.
+Each command MUST have its own file (e.g., `status.md`, `plan-week.md`, etc.).
+
+Generate these individual command files in `.claude/commands/`:
+- `status.md` → /status
+- `plan-week.md` → /plan-week
+- `start-week.md` → /start-week
+- `ship-mvp.md` → /ship-mvp
+- `harden.md` → /harden
+- `publish.md` → /publish
+- `retro.md` → /retro
+- `evaluate.md` → /evaluate
+- `adapt-path.md` → /adapt-path
+- `add-best-practice.md` → /add-best-practice
+- `debug-learning.md` → /debug-learning
+
+Each command file MUST follow this format:
+```markdown
+# Command: /command-name
+
+## Purpose
+[What this command does]
+
+## Inputs
+[What the user needs to provide, if any]
+
+## Outputs
+[What artifacts or results are produced]
+
+## When to Use
+[Scenarios when this command is appropriate]
+
+## Agent Routing
+[Which agent handles this command: Planner, Builder, Reviewer, Evaluator, Coach, or Researcher]
+
+## Example Usage
+[Copy-paste example prompt for the user]
+```
+
+Additionally:
+- `.claude/commands/catalog.md` is the summary/index of all commands.
+- `.claude/commands/README.md` explains how to use and extend commands.
+- `docs/commands.md` should be a friendly guide and link to the catalog.
 
 ### 5) Agents
 - `.claude/agents/*.md` define role responsibilities + constraints + handoffs:
