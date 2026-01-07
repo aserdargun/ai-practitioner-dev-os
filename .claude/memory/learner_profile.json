@@ -1,0 +1,33 @@
+{
+  "learner_id": "learner-001",
+  "level": "Advanced",
+  "tier_scope": ["Tier1", "Tier2", "Tier3"],
+  "start_date": "2026-01-01",
+  "current_month": 1,
+  "current_week": 1,
+  "preferences": {
+    "learning_style": "hands-on",
+    "session_length_minutes": 120,
+    "preferred_domains": ["ml-engineering", "data-engineering", "llm-applications"],
+    "timezone": "UTC"
+  },
+  "goals": {
+    "primary": "Become a production-ready AI practitioner",
+    "secondary": [
+      "Build portfolio of ML projects",
+      "Master MLOps practices",
+      "Gain expertise in LLM applications"
+    ]
+  },
+  "background": {
+    "programming_experience_years": 3,
+    "ml_experience_level": "intermediate",
+    "strongest_skills": ["python", "data-analysis"],
+    "areas_to_improve": ["deployment", "system-design", "evaluation"]
+  },
+  "metadata": {
+    "created_at": "2026-01-01T00:00:00Z",
+    "last_updated": "2026-01-01T00:00:00Z",
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,29 @@
+Welcome to the AI Practitioner Learning System
+
+This document provides an overview of the learning system and its key features.
+
+## What is this system?
+
+The AI Practitioner Booster 2026 is an AI-driven, project-based learning system
+designed to help you become a production-ready AI practitioner. It uses a
+continuous feedback loop of Evaluate, Adapt, and Execute to optimize your
+learning journey.
+
+## Key Features
+
+1. Structured Curriculum: 12-month program covering foundations to advanced topics
+2. Project-Based Learning: Real projects that build your portfolio
+3. AI-Driven Adaptation: The system adjusts based on your progress
+4. Best Practices Capture: Learn and remember effective patterns
+
+## How it Works
+
+The system operates through commands that you invoke via Claude Code. These
+commands trigger different agents (Planner, Builder, Reviewer, Evaluator, Coach)
+to help you with various aspects of your learning journey.
+
+## Getting Started
+
+Start by checking your status with /status, then generate your weekly plan
+with /plan-week. Work through the tasks, and run /retro at the end of the week
+to reflect on your progress.

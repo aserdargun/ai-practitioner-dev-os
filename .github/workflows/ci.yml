@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff check
+        run: ruff check templates/ examples/
+
+  test-fastapi:
+    name: Test FastAPI Template
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd templates/template-fastapi-service
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          cd templates/template-fastapi-service
+          pytest -v
+
+  test-data-pipeline:
+    name: Test Data Pipeline Template
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd templates/template-data-pipeline
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          cd templates/template-data-pipeline
+          pytest -v
+
+  test-eval-harness:
+    name: Test Eval Harness Template
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd templates/template-eval-harness
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          cd templates/template-eval-harness
+          pytest -v
+
+  test-rag-service:
+    name: Test RAG Service Template
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd templates/template-rag-service
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          cd templates/template-rag-service
+          pytest -v

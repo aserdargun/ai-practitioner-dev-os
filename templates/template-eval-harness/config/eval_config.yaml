@@ -1,0 +1,20 @@
+# Evaluation configuration
+
+evaluation:
+  # Metrics to compute
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+
+  # Thresholds for each metric (optional)
+  thresholds:
+    accuracy: 0.8
+    f1: 0.7
+
+  # Output format: json, markdown, or console
+  output_format: console
+
+  # Fail CI if below threshold
+  fail_on_threshold: true

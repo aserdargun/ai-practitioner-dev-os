@@ -1,0 +1,9 @@
+{
+  "predictions": [1, 0, 1, 1, 0, 1, 0, 0, 1, 1],
+  "ground_truth": [1, 0, 1, 0, 0, 1, 1, 0, 1, 1],
+  "metadata": {
+    "model_version": "0.1.0",
+    "eval_date": "2026-01-07",
+    "dataset": "test_set_v1"
+  }
+}

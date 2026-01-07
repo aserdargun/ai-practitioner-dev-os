@@ -1,0 +1,9 @@
+# Journal Directory
+
+This directory contains weekly journal entries.
+
+Weekly entries are created by `/plan-week` and updated throughout the week.
+
+Format: `week-XX.md` (e.g., week-01.md, week-02.md)
+
+Template entries will be created automatically when you run `/plan-week`.

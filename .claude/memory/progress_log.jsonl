@@ -1,0 +1,2 @@
+{"timestamp": "2026-01-01T00:00:00Z", "event": "system_initialized", "level": "Advanced", "message": "Learning system initialized for Advanced learner"}
+{"timestamp": "2026-01-01T00:00:01Z", "event": "month_started", "month": 1, "title": "Foundations & Environment Setup", "message": "Starting Month 01 curriculum"}
