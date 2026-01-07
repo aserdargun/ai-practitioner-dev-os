@@ -1,0 +1,20 @@
+# Example pipeline configuration
+
+pipeline:
+  name: "example-pipeline"
+  description: "Demo data processing pipeline"
+
+extract:
+  source: "data/input.csv"
+  format: "csv"
+
+transform:
+  steps:
+    - name: "drop_nulls"
+      enabled: true
+    - name: "normalize"
+      columns: ["value"]
+
+load:
+  destination: "data/output.csv"
+  format: "csv"

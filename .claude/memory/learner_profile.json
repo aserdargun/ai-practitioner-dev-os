@@ -1,0 +1,33 @@
+{
+  "level": "Beginner",
+  "started": "2026-01-01",
+  "current_month": 1,
+  "current_week": 1,
+  "goals": [
+    "Master Python data science fundamentals",
+    "Build a portfolio of ML projects",
+    "Develop strong coding habits"
+  ],
+  "constraints": {
+    "hours_per_week": 10,
+    "preferred_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "timezone": "UTC",
+    "no_work_days": []
+  },
+  "interests": [
+    "data analysis",
+    "machine learning",
+    "natural language processing"
+  ],
+  "background": "Starting AI/ML learning journey",
+  "learning_style": {
+    "prefers_hands_on": true,
+    "prefers_reading": true,
+    "prefers_video": false
+  },
+  "equipment": {
+    "os": "linux",
+    "python_version": "3.11",
+    "gpu_available": false
+  }
+}
