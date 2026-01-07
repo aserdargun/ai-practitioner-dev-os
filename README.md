@@ -45,6 +45,8 @@ When you run `SETUP.md` in Claude Code, it will generate a complete repo with:
 - Windows: use **WSL** (recommended) or **Git Bash** for running `.sh` hooks
 
 ---
+[Watch the demo setup](https://github.com/user-attachments/assets/18cf45e2-aeb4-4580-b3b5-ada4db0b9513)
+---
 
 ## Setup: Fork → Generate → Clone
 
