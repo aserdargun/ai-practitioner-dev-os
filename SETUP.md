@@ -1,9 +1,12 @@
 # SETUP.md — Repository Generator Prompt (Claude Code)
 
 ## How to use this prompt
-1) Open this file in GitHub (or locally), copy **everything** below.
-2) Paste it into **Claude Code** (with repo integration enabled) while connected to your fork of this repository.
-3) Run it. Claude will ask you **one** question for `{{LEARNER_LEVEL}}`, then generate the entire repository structure, docs, templates, CI, and scripts.
+1) First, customize your tech stack in `STACK.md` by checking `[x]` the technologies you want to learn (optional).
+2) In **Claude Code** (with repo integration enabled), while connected to your fork, enter:
+   ```
+   Execute @SETUP.md for @STACK.md
+   ```
+3) Claude will ask you **one** question for `{{LEARNER_LEVEL}}`, then generate the entire repository structure customized to your selected tech stack.
 
 > Important: This prompt is meant to be executed by Claude Code. It is not a human checklist.
 
@@ -23,8 +26,13 @@ Repo name (use as title in README): "ai-practitioner-dev-os"
 Theme: “AI Practitioner Booster 2026 — AI-driven, project-based learning system”.
 
 IMPORTANT: Before you generate anything, ask me ONE question:
-- “What is the learner level? (Beginner / Intermediate / Advanced)”
+- "What is the learner level? (Beginner / Intermediate / Advanced)"
 Use the answer to set {{LEARNER_LEVEL}} everywhere.
+
+IMPORTANT: Read the `STACK.md` file to get the user's customized tech stack.
+- If items are checked `[x]`, include them in the curriculum.
+- If no items are checked, use all items for the selected learner level tier(s).
+- The checked items override the default curriculum for each month.
 
 Hard requirements
 - Markdown-first documentation.
@@ -402,57 +410,42 @@ Include a client example:
 
 ### 11) 12-month curriculum
 Generate `paths/{{LEARNER_LEVEL}}/month-01..month-12/README.md`.
+
+IMPORTANT: Use the checked items from `STACK.md` to customize each month's curriculum.
+- Focus month projects on technologies the user has selected
+- If specific technologies are checked, prioritize them in the learning goals
+- Distribute the selected technologies across the 12 months appropriately
+
 Each month README MUST include:
 - Why it matters (job relevance)
 - Prerequisites
-- Learning goals
+- Learning goals (based on selected STACK.md items for this tier)
 - Main project (deliverables + Definition of Done checklist)
 - Stretch goals
-- “Claude prompts” section (copy/paste prompts that call agents + commands)
+- "Claude prompts" section (copy/paste prompts that call agents + commands)
 - How to publish (demo + write-up)
 Apply pace rules:
-- Beginner: Tier 1 only
-- Intermediate: Tier 1 + Tier 2
-- Advanced: Tier 1 + Tier 2 + Tier 3
+- Beginner: Tier 1 only (use checked Tier 1 items from STACK.md)
+- Intermediate: Tier 1 + Tier 2 (use checked items from both tiers)
+- Advanced: Tier 1 + Tier 2 + Tier 3 (use checked items from all tiers)
 Keep month numbering consistent; Advanced integrates harder infra/ops earlier.
 
 ### 12) Stacks
 Write:
 - stacks/tiers.md (tier definitions + pace)
 - stacks/tier-1-beginner.md, tier-2-intermediate.md, tier-3-advanced.md
-Use this refactored tier model (copy verbatim into files and present cleanly):
 
-Tier 1 (Beginner Foundation)
-- Mindset: Agile
-- Skills: Data Science, Probability, Statistics, ETL, Predictive Analytics, Optimization, Experimental Design, A/B Testing, Time Series Analysis, Text Mining, Computer Vision, Deep Learning (intro), SDLC, Digital Signal Processing, Fast Fourier Analysis
-- Algorithms: ARIMA, KNN, Naive Bayes, SVM, Decision Forests, Boosting, Clustering, LDA, RNN, LSTM, Word2Vec, GloVe, FastText, YOLO
-- Languages: Python (assumed), SQL, R, Bash, Shell Scripting, VBA, GraphQL
-- DB: MS SQL
-- Frameworks: Flask, Django
-- Libraries: Pandas, NumPy, Matplotlib, seaborn, Plotly, NLTK, Dash
-- Tools/Platforms: VS Code, Jupyter, Git/GitHub, Linux fundamentals, Streamlit, Power BI, Metabase (optional), PyCharm (optional)
-- Protocol: RESTful APIs
+IMPORTANT: Read the tech stack from `STACK.md` file in the repository root.
+- Parse the checked `[x]` items from each tier section
+- If no items are checked in STACK.md, use ALL items for that tier as defaults
+- Generate the tier files based on the user's selections
 
-Tier 2 (Intermediate Shipping)
-- Skills: MLOps (basics), DevOps (basics), CI/CD, NoSQL, Embedding Models, RAG Systems
-- Algorithms: XGBoost, LightGBM, CatBoost, CNN, GAN, GPT, BERT, T5, PEFT, LoRA/QLoRA
-- Automation: Power Automate, Power Apps, n8n
-- Cloud: AWS, Azure, GCP
-- Databases: PostgreSQL, MySQL, MongoDB, Redis, DynamoDB, Elasticsearch, OpenSearch, ClickHouse, Snowflake, Redshift, BigQuery, Synapse, Azure SQL DB, Cosmos DB, ADLS, Neo4j, TigerGraph, JanusGraph, Neptune, Pinecone, Qdrant, Weaviate, Milvus, FAISS
-- Frameworks: FastAPI, React, Next.js, Spring Boot
-- Libraries: scikit-learn, SciPy, statsmodels, PyTorch, TensorFlow, JAX, PyMC, NumPyro, OpenCV, Hugging Face, LangChain, LangGraph, LlamaIndex, SQLAlchemy, GenSim
-- Monitoring: Prometheus, Grafana, Datadog, CloudWatch
-- Platforms: Docker, GitHub Actions, Jenkins, GitLab CI, CircleCI, Bitbucket, Travis CI, Airflow, Azure Data Factory, dbt, MLflow, Databricks/Azure Databricks, Azure DevOps, SageMaker, Vertex AI, Bedrock, Azure AI Foundry, Azure ML, Kubeflow (intro), OpenAI Agent Evals, OpenAI Trace Grading, OpenAI Tools File Search/Web Search
-- Services: S3, Athena, EventBridge, API Gateway, Lambda, Azure Functions, Azure Stream Analytics, Azure Container Apps
+The tier structure in STACK.md follows this organization:
+- **Tier 1 (Beginner Foundation)**: Mindset & Skills, Algorithms, Languages, Databases, Frameworks, Libraries, Tools & Platforms, Protocols
+- **Tier 2 (Intermediate Shipping)**: Skills, Algorithms, Automation, Cloud, Databases, Frameworks, Libraries, Monitoring, Platforms, Services
+- **Tier 3 (Advanced Scale/Interop/Perf)**: APIs & Protocols, Systems, Platforms, Performance, Advanced ML, Languages, Domain-Specific
 
-Tier 3 (Advanced Scale/Interop/Perf)
-- APIs/Protocols: OpenAI Responses API, OpenAI Realtime API, MCP, A2A
-- Systems: Kafka, RabbitMQ, Kinesis, Spark, Hadoop, Hive, Pig
-- Platform: Kubernetes, AKS, ECS, Kubeflow (platform-grade)
-- Performance: ONNX, TensorRT, CUDA, TFLite
-- Advanced ML: Federated Learning, NVIDIA FLARE, Reinforcement Learning, Graph Neural Networks, Network Analysis
-- Languages: Scala, C, C++, Java-for-big-data
-- Domain: ArcGIS (optional), OpenEmbedded, YOCTO (optional)
+When generating month curricula, prioritize the checked items from STACK.md to create a personalized learning path.
 
 ### 13) OSS hygiene + CI
 Include:

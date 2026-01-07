@@ -2,13 +2,13 @@
 
 AI Practitioner Booster 2026 — an **AI-driven, project-based learning OS** that evaluates your progress, adapts your curriculum, and keeps your best practices inside the repo.
 
-It contains a generator prompt (`SETUP.md`) and a minimal set of instructions so **Claude Code** can generate the full learning system (folders, docs, templates, CI, etc.) into *your fork*.
+It contains a generator prompt (`SETUP.md`), a tech stack selector (`STACK.md`), and a minimal set of instructions so **Claude Code** can generate the full learning system (folders, docs, templates, CI, etc.) into *your fork*.
 
 ---
 
-## What you’ll get after generation
+## What you'll get after generation
 
-When you run `SETUP.md` in Claude Code, it will generate a complete repo with:
+When you run `Execute @SETUP.md for @STACK.md` in Claude Code, it will generate a complete repo with:
 
 - A `.claude/` folder containing:
   - **agents** (planner/builder/reviewer/evaluator/coach/researcher)
@@ -58,23 +58,33 @@ In Claude Code:
 - Connect to GitHub
 - Select your forked repo: **`ai-practitioner-dev-os`**
 
-### 3) Run the generator prompt (SETUP.md)
-Open `SETUP.md` in this repo and copy its entire contents.
+### 3) Customize your tech stack (optional)
+Open `STACK.md` and check `[x]` the technologies you want to include in your learning path:
+- Review each tier (Tier 1 = Beginner, Tier 2 = Intermediate, Tier 3 = Advanced)
+- Check the items you want to focus on
+- Save your changes
 
-In Claude Code, paste it and run it.
+> This step is optional. If you skip it, Claude will use the default curriculum based on your learner level.
+
+### 4) Run the generator prompt
+In Claude Code, enter:
+
+```
+Execute @SETUP.md for @STACK.md
+```
 
 Claude will ask **one question** first:
-- “What is the learner level? (Beginner / Intermediate / Advanced)”
+- "What is the learner level? (Beginner / Intermediate / Advanced)"
 
 After you answer, Claude will generate:
-- the full folder tree
+- the full folder tree customized to your selected tech stack
 - all documentation
 - scripts and templates
 - CI workflow
 
 > Tip: Let Claude commit changes directly to your fork (or create a PR if you prefer review).
 
-### 4) Clone your generated repo locally
+### 5) Clone your generated repo locally
 After generation completes on GitHub:
 
 ```bash
@@ -82,7 +92,7 @@ git clone https://github.com/<your-username>/ai-practitioner-dev-os.git
 cd ai-practitioner-dev-os
 ```
 
-### 5) Open in VS Code
+### 6) Open in VS Code
 ```bash
 code .
 ```
@@ -93,6 +103,7 @@ code .
 
 ### A) Verify the generated structure exists
 After generation, you should see:
+- `STACK.md` (your tech stack selector)
 - `.claude/README.md`
 - `docs/how-to-use.md`
 - `stacks/tiers.md`
@@ -250,7 +261,12 @@ This project uses the MIT License (generated in the full repo).
 
 ## Repository Generator Prompt
 
-Run `SETUP.md` in Claude Code.
-Claude will ask you for the learner level and generate the full learning OS into your fork.
+In Claude Code, enter:
 
-Re-running SETUP.md may overwrite generated docs/templates; `.claude/memory/*` should remain append-only
+```
+Execute @SETUP.md for @STACK.md
+```
+
+Claude will ask you for the learner level and generate the full learning OS into your fork, customized to the technologies you selected in `STACK.md`.
+
+> Re-running the setup may overwrite generated docs/templates; `.claude/memory/*` should remain append-only
