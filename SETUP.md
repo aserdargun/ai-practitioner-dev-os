@@ -14,11 +14,13 @@
 
 ---
 
-You are Claude Code acting as:
-1) a senior AI engineer + OSS maintainer,
-2) a learning scientist,
-3) a project manager,
-4) an evaluator/coach.
+You are Claude Code acting as an **assistant** to the learner in the following advisory roles:
+1) a senior AI engineer + OSS maintainer advisor,
+2) a learning scientist advisor,
+3) a project manager advisor,
+4) an evaluator/coach advisor.
+
+**IMPORTANT**: All recommendations, evaluations, and proposed changes require explicit user approval before being applied. Claude provides suggestions; the learner makes final decisions.
 
 Build a public, forkable GitHub repository.
 
@@ -37,7 +39,7 @@ IMPORTANT: Read the `STACK.md` file to get the user's customized tech stack.
 Hard requirements
 - Markdown-first documentation.
 - The repo must be immediately usable by a learner (no placeholders except {{LEARNER_LEVEL}}).
-- The system must be AI-driven and continuously evolving based on learner successes/failures.
+- The system must be AI-assisted with human approval, providing recommendations that evolve based on learner successes/failures. All adaptations require explicit learner confirmation before being applied.
 - Claude capabilities must live under a `.claude/` folder (agents, commands, skills, hooks, memory, MCP).
 - Do not break links from docs/ to tooling; keep docs pointing to `.claude/` where appropriate.
 - Provide a “special path README” per learner level that becomes their main dashboard.
@@ -266,7 +268,7 @@ Must include:
   5) Clone your generated repository to your local dev environment
   6) Recommended IDE: VS Code
 - Quickstart (5 minutes) to run a first /status + /plan-week + /evaluate + /report cycle
-- How the AI-driven loop works (Evaluate → Adapt → Execute)
+- How the AI-assisted loop works (Evaluate → Recommend → **User Approves** → Execute) — emphasizing that no changes happen without explicit user approval
 - Link to learner dashboard: paths/{{LEARNER_LEVEL}}/README.md
 - Daily workflow + Weekly workflow
 - How to ask Claude for help using /commands
@@ -338,14 +340,17 @@ Additionally:
 - `docs/commands.md` should be a friendly guide and link to the catalog.
 
 ### 5) Agents
-- `.claude/agents/*.md` define role responsibilities + constraints + handoffs:
-  - Planner Agent
-  - Builder Agent
-  - Reviewer Agent
-  - Evaluator Agent
-  - Coach Agent
-  - Researcher Agent
-docs/agents.md should explain how to invoke them and point to those files.
+- `.claude/agents/*.md` define advisory role responsibilities + constraints + recommended handoffs:
+  - Planner Agent (suggests plans; user approves before execution)
+  - Builder Agent (proposes implementations; user reviews and approves)
+  - Reviewer Agent (provides feedback; user decides what to act on)
+  - Evaluator Agent (generates assessments; user validates results)
+  - Coach Agent (offers guidance; user chooses which advice to follow)
+  - Researcher Agent (gathers information; user directs research focus)
+
+**Human-in-the-loop requirement**: Each agent must present recommendations to the user and wait for explicit approval before taking any action that modifies files, state, or learning path. Agent handoffs must be confirmed by the user.
+
+docs/agents.md should explain how to invoke them, the approval workflow, and point to those files.
 
 ### 6) Skills
 - `.claude/skills/*.md` are the canonical playbooks.
@@ -365,34 +370,41 @@ Cross-platform note (must appear in docs/hooks.md):
 - These hooks are shell scripts intended for Linux/macOS and Windows via WSL or Git Bash.
 - Provide a “Manual fallback” subsection showing the equivalent commands a learner can run step-by-step if they cannot run .sh scripts.
 
-### 8) Local “Memory System”
-- `.claude/memory/*` is the only “memory store”.
+### 8) Local "Memory System"
+- `.claude/memory/*` is the only "memory store".
 Implement:
 - learner_profile.json (goals, constraints, schedule)
 - progress_log.jsonl (timestamped events)
 - decisions.jsonl (important decisions)
 - best_practices.md (living doc; appended frequently)
 
-docs/memory-system.md must explain:
-- how Claude updates memory (append-only discipline + PR-friendly edits)
-- how learner reviews/edits memory
-- how memory affects adaptation
-- IMPORTANT: Memory files are append-only sources of truth; `paths/{{LEARNER_LEVEL}}/tracker.md` is a derived artifact that `report.py` may overwrite/regenerate at any time.
+**Human oversight requirement**: Claude must show proposed memory updates to the user and receive explicit approval before writing to any memory file. Memory is for record-keeping, not for autonomously modifying Claude's behavior.
 
-### 9) Evaluation & Adaptation
-- `.claude/path-engine/*` implements the loop with Python stdlib only.
+docs/memory-system.md must explain:
+- how Claude proposes memory updates (user must approve before write)
+- how learner reviews/edits memory (learner has full control)
+- how memory informs recommendations (Claude reads memory to provide context-aware suggestions, but user approves all actions)
+- IMPORTANT: Memory files are append-only sources of truth; `paths/{{LEARNER_LEVEL}}/tracker.md` is a derived artifact that `report.py` may overwrite/regenerate at any time (with user confirmation).
+
+### 9) Evaluation & Adaptation (Human-Approved)
+- `.claude/path-engine/*` implements the recommendation loop with Python stdlib only.
 Implement:
-- evaluate.py reads `.claude/memory/*` + basic repo signals and outputs scores
-- adapt.py proposes modifications (repeat month, remediate, accelerate, swap project, reorder upcoming months, change learner level)
-- report.py writes/updates `paths/{{LEARNER_LEVEL}}/tracker.md` with a clean report
+- evaluate.py reads `.claude/memory/*` + basic repo signals and outputs scores for user review
+- adapt.py **proposes** modifications (repeat month, remediate, accelerate, swap project, reorder upcoming months, change learner level) — **user must explicitly approve each proposed change before it is applied**
+- report.py generates a draft report for `paths/{{LEARNER_LEVEL}}/tracker.md` that the user reviews before finalizing
+
+**Critical human-in-the-loop requirement**:
+- The evaluation → adaptation → execution flow is: Evaluate → Present recommendations → **User approves** → Execute approved changes only
+- adapt.py MUST NOT automatically apply changes; it outputs proposals that require user confirmation
+- No path modifications, project swaps, or level changes occur without explicit user approval
 
 Hard rules:
-- docs/evaluation/adaptation-rules.md must define the allowed mutations (the “Allowed adaptations” list above) and provide a clear schema.
-- adapt.py MUST ONLY output those allowed mutations, in that schema, so changes are deterministic and reviewable.
+- docs/evaluation/adaptation-rules.md must define the allowed mutations (the "Allowed adaptations" list above), provide a clear schema, and document the user approval workflow.
+- adapt.py MUST ONLY output proposed mutations in that schema for user review; changes are only applied after user confirmation.
 - docs/evaluation/scoring.md must also include:
-  - IMPORTANT: Memory files are append-only sources of truth; `paths/{{LEARNER_LEVEL}}/tracker.md` is a derived artifact that `report.py` may overwrite/regenerate at any time.
+  - IMPORTANT: Memory files are append-only sources of truth; `paths/{{LEARNER_LEVEL}}/tracker.md` is a derived artifact that `report.py` may regenerate (with user confirmation).
 
-docs/evaluation/* explain rubric/signals/scoring/adaptation rules and link to scripts.
+docs/evaluation/* explain rubric/signals/scoring/adaptation rules, the approval workflow, and link to scripts.
 
 ### 10) MCP
 - `.claude/mcp/*` contains tool contracts + safety + examples + stubs.
@@ -484,7 +496,7 @@ examples/mini-example must show “done looks like this” with:
   - specific agents
   - memory updates
   - evaluation + adaptation loop
-- Make the system feel like a “learning OS” that guides, evaluates, and adapts.
+- Make the system feel like a "learning OS" that guides, evaluates, and recommends adaptations — with the learner always in control of final decisions.
 - If any instruction conflicts, resolve by priority: Hard requirements → Linking rules → Required tree → Content requirements → Everything else.
 
 Now proceed to generate the entire repository.
