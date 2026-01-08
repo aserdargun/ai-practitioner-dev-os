@@ -44,7 +44,7 @@ All agents provide recommendations that require explicit user approval before ex
 ## Memory System
 
 After generation, `.claude/memory/` files are append-only sources of truth:
-- `learner_profile.json` - Goals and constraints
+- `learner_profile.json` - Goals, constraints, and schedule
 - `progress_log.jsonl` - Timestamped events
 - `decisions.jsonl` - Important decisions
 - `best_practices.md` - Living doc
