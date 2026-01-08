@@ -61,10 +61,6 @@ Allowed adaptations (must be enforced by docs + code)
 / 
   README.md
   CLAUDE.md
-  LICENSE
-  CODE_OF_CONDUCT.md
-  CONTRIBUTING.md
-  SECURITY.md
 
   .claude/
     README.md

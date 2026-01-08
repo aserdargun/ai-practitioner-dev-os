@@ -255,7 +255,7 @@ This should not happen with the current `SETUP.md`. If it does:
 ---
 
 ## License
-This project uses the MIT License (generated in the full repo).
+This project uses the MIT License.
 
 ---
 
