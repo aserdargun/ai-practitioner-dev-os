@@ -457,10 +457,6 @@ When generating month curricula, prioritize the checked items from STACK.md to c
 
 ### 13) OSS hygiene + CI
 Include:
-- MIT license
-- Contributor Covenant code of conduct
-- Contributing guide
-- Security policy
 - GitHub issue templates + PR template
 - GitHub Actions workflow (ruff + pytest) on PR and main
 
