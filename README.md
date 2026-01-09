@@ -1,293 +1,178 @@
 # ai-practitioner-dev-os
 
-AI Practitioner Booster 2026 — an **AI-driven, project-based learning OS** that evaluates your progress, adapts your curriculum, and keeps your best practices inside the repo.
+**AI Practitioner Booster 2026 — AI-driven, project-based learning system**
 
-It contains a generator prompt (`SETUP.md`), a tech stack selector (`STACK.md`), and a minimal set of instructions so **Claude Code** can generate the full learning system (folders, docs, templates, CI, etc.) into *your fork*.
-
----
-
-## What you'll get after generation
-
-When you run the generator prompt in Claude Code, it will generate a complete repo with:
-
-- A `.claude/` folder containing:
-  - **agents** (planner/builder/reviewer/evaluator/coach/researcher)
-  - **commands** (`/status`, `/plan-week`, `/evaluate`, `/adapt-path`, etc.)
-  - **skills** playbooks (EDA→insight, shipping APIs, RAG+evals, etc.)
-  - **hooks** runnable scripts (week start/review, pre-publish checks)
-  - **memory system** (`learner_profile.json`, progress logs, best practices)
-  - **path-engine** (`evaluate.py`, `adapt.py`, `report.py`) using Python stdlib only
-  - **MCP** tool contracts + server/client stubs
-- `docs/` that explains the whole loop and how to use it day-to-day
-- `paths/{{LEARNER_LEVEL}}/README.md` as your **main dashboard**
-- `month-01 … month-12` curriculum (paced by Beginner/Intermediate/Advanced)
-- Real runnable templates (FastAPI service, data pipeline, RAG service, eval harness)
-- GitHub Actions CI (ruff + pytest)
-
-> The learner level is pace-based and cumulative:
-> - Beginner: Tier 1 only
-> - Intermediate: Tier 1 + Tier 2
-> - Advanced: Tier 1 + Tier 2 + Tier 3
+A public, forkable GitHub repository that creates a personalized learning operating system for AI practitioners. This system guides you through a 12-month curriculum with AI-assisted evaluation, adaptation, and human-approved path changes.
 
 ---
 
-## Prerequisites
+## What This Repo Is
 
-### Required
-- A GitHub account
-- Claude Code access with GitHub repo integration enabled
-- Git installed locally
-- Python 3.11+ recommended
-- VS Code recommended
-
-### OS notes
-- Linux / macOS: works out of the box
-- Windows: use **WSL** (recommended) or **Git Bash** for running `.sh` hooks
+This is a **learning OS** that combines:
+- **Structured curriculum**: 12 months of project-based learning
+- **AI assistance**: Claude Code acts as your advisor (planner, builder, reviewer, evaluator, coach, researcher)
+- **Human-in-the-loop**: All recommendations require your explicit approval before execution
+- **Adaptive paths**: The system proposes adjustments based on your progress—you decide what to accept
 
 ---
 
-## Two Ways to Generate Your Learning Path
+## How to Use (From Zero)
 
-### Option A: Full Curriculum (Recommended for most learners)
-In Claude Code, run:
-```
-Execute @SETUP.md
-```
-Claude asks your level (Beginner/Intermediate/Advanced), then generates the **full curriculum** for your level's tiers using `STACK.md`.
+1. **Fork this repository** to your GitHub account
+2. **Connect Claude Code** to your forked repository
+3. **Run the generator** (if starting fresh):
+   ```
+   Execute @SETUP.md
+   ```
+   Or with a custom stack:
+   ```
+   Execute @SETUP.md for @MY_STACK.md
+   ```
+4. **Clone your generated repository** to your local dev environment
+5. **Recommended IDE**: VS Code with Claude Code extension
 
-### Option B: Custom Stack
-1. Edit `MY_STACK.md` - check `[x]` only the technologies you want to learn
-2. In Claude Code, run:
-```
-Execute @SETUP.md for @MY_STACK.md
-```
-
-### Tier Scope by Level (Cumulative)
-| Level | Tiers Included | Scope |
-|-------|----------------|-------|
-| **Beginner** | Tier 1 only | Foundation (53 items) |
-| **Intermediate** | Tier 1 + Tier 2 | Foundation + Shipping (148 items) |
-| **Advanced** | Tier 1 + Tier 2 + Tier 3 | All tiers (175 items) |
+> See [SETUP.md](SETUP.md) for the canonical generator prompt.
 
 ---
-[Watch the demo setup](https://github.com/user-attachments/assets/18cf45e2-aeb4-4580-b3b5-ada4db0b9513)
----
 
-## Setup: Fork → Generate → Clone
+## Quickstart (5 Minutes)
 
-### 1) Fork this repository
-Click **Fork** on GitHub to create your own copy under your account.
-
-### 2) Connect Claude Code to your fork
-In Claude Code:
-- Connect to GitHub
-- Select your forked repo: **`ai-practitioner-dev-os`**
-
-### 3) Run the generator prompt
-Choose one of the two options:
-
-**Option A: Full Curriculum** (use all items for your level)
-```
-Execute @SETUP.md
-```
-
-**Option B: Custom Stack** (use only selected items)
-1. Edit `MY_STACK.md` and check `[x]` the technologies you want
-2. Run:
-```
-Execute @SETUP.md for @MY_STACK.md
-```
-
-Claude will ask **one question** first:
-- "What is the learner level? (Beginner / Intermediate / Advanced)"
-
-After you answer, Claude will generate:
-- the full folder tree customized to your level/stack
-- all documentation
-- scripts and templates
-- CI workflow
-
-> Tip: Let Claude commit changes directly to your fork (or create a PR if you prefer review).
-
-### 4) Clone your generated repo locally
-After generation completes on GitHub:
+Run your first evaluation cycle:
 
 ```bash
-git clone https://github.com/<your-username>/ai-practitioner-dev-os.git
-cd ai-practitioner-dev-os
-```
+# 1. Check your current status
+/status
 
-### 5) Open in VS Code
-```bash
-code .
-```
+# 2. Plan your week
+/plan-week
 
----
-
-## Quickstart (first 10 minutes)
-
-### A) Verify the generated structure exists
-After generation, you should see:
-- `STACK.md` (your tech stack selector)
-- `.claude/README.md`
-- `docs/how-to-use.md`
-- `stacks/tiers.md`
-- `paths/{{LEARNER_LEVEL}}/README.md` (your dashboard)
-- `templates/*` and `.github/workflows/ci.yml`
-
-### B) Run the learning OS loop (locally)
-The engine scripts are inside:
-
-- `.claude/path-engine/evaluate.py`
-- `.claude/path-engine/adapt.py`
-- `.claude/path-engine/report.py`
-
-From the repo root:
-
-```bash
+# 3. Run evaluation
 python .claude/path-engine/evaluate.py
-python .claude/path-engine/adapt.py
+
+# 4. Generate progress report
 python .claude/path-engine/report.py
 ```
 
-This produces/updates your tracker at:
-- `paths/{{LEARNER_LEVEL}}/tracker.md`
-
-> Important: `.claude/memory/*` is the append-only source of truth.  
-> `paths/{{LEARNER_LEVEL}}/tracker.md` is a derived artifact and may be overwritten/regenerated by `report.py`.
-
-### C) Start your first week
-Open your dashboard:
-- `paths/{{LEARNER_LEVEL}}/README.md`
-
-Use the command workflow described in:
-- `docs/commands.md` (friendly guide)
-- `.claude/commands/catalog.md` (source of truth)
-
-Typical first week:
-- `/status`
-- `/plan-week`
-- `/start-week`
-- do tasks
-- `/retro`
-- `/evaluate`
-- `/adapt-path`
-
 ---
 
-## How “implementation” works (the system loop)
+## How the AI-Assisted Loop Works
 
-This repo is designed to behave like a self-updating learning OS:
-
-1. **Execute**: you work on the month project, ship deliverables, write reflections  
-2. **Log**: you append progress to `.claude/memory/*` (progress log, decisions, best practices)  
-3. **Evaluate**: `evaluate.py` reads memory + repo signals and computes scores  
-4. **Adapt**: `adapt.py` proposes changes using only allowed mutations  
-5. **Report**: `report.py` updates the learner tracker + weekly plan pointers  
-
-### Allowed adaptations (what the system can change)
-The generated repo defines and enforces these in `docs/evaluation/adaptation-rules.md`:
-
-- Change learner level (Beginner ↔ Intermediate ↔ Advanced)
-- Reorder upcoming months (within tier scope)
-- Insert remediation week(s) inside a month
-- Swap the month’s main project for an equivalent one
-
-`adapt.py` is constrained to output **only** these mutations in a documented schema.
-
----
-
-## Running hooks (week start / week review / pre-publish)
-
-Generated scripts live in:
-- `.claude/hooks/`
-
-Examples:
-
-```bash
-bash .claude/hooks/pre_week_start.sh
-bash .claude/hooks/post_week_review.sh
-bash .claude/hooks/pre_publish_check.sh
+```
+┌─────────────┐     ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│  Evaluate   │ ──► │  Recommend  │ ──► │ User Approves│ ──► │   Execute   │
+└─────────────┘     └─────────────┘     └──────────────┘     └─────────────┘
+       ▲                                                            │
+       └────────────────────────────────────────────────────────────┘
 ```
 
-### If you can’t run `.sh` scripts
-See `docs/hooks.md` for:
-- WSL / Git Bash guidance (Windows)
-- Manual fallback steps (copy/paste commands)
+**Key principle**: No changes happen without your explicit approval. Claude provides suggestions; you make final decisions.
 
 ---
 
-## CI expectations (ruff + pytest)
+## Your Learning Dashboard
 
-After generation, GitHub Actions will run:
-- `ruff` formatting/lint checks
-- `pytest` test suites
+**Your level**: Advanced
 
-Templates include:
-- minimal pinned dependencies in `pyproject.toml`
-- `[tool.ruff]` configuration
-- `[tool.pytest.ini_options]` (or equivalent) so `pytest` runs consistently
+**Go to your dashboard**: [paths/Advanced/README.md](paths/Advanced/README.md)
 
-If CI fails, start here:
-- `docs/publishing/how-to-demo.md` (often includes sanity checks)
-- `.github/workflows/ci.yml` (what CI actually runs)
+This is your main control center with:
+- Current month progress
+- Weekly planning templates
+- Commands cheat-sheet
+- Evaluation snapshots
 
 ---
 
-## Where to start (navigation)
+## Daily Workflow
 
-After generation, your main entry points are:
+1. Open your dashboard: `paths/Advanced/README.md`
+2. Check today's focus from your week plan
+3. Work on your project deliverables
+4. Log progress: `/add-best-practice` for insights learned
+5. Ask Claude for help when stuck: `/debug-learning`
 
-- **Dashboard:** `paths/{{LEARNER_LEVEL}}/README.md`
-- **How to use:** `docs/how-to-use.md`
-- **Commands guide:** `docs/commands.md`
-- **Agents:** `docs/agents.md`
-- **Skills playbook:** `docs/skills-playbook.md`
-- **Evaluation rubric:** `docs/evaluation/rubric.md`
-- **Memory system:** `docs/memory-system.md`
-- **Claude capabilities root:** `.claude/README.md`
+## Weekly Workflow
 
----
-
-## Updating the system safely (recommended workflow)
-
-- Keep changes PR-friendly:
-  - Memory files: append-only (`.claude/memory/*.jsonl`, `best_practices.md`)
-  - Tracker: derived, can be regenerated (`paths/{{LEARNER_LEVEL}}/tracker.md`)
-- Prefer small PRs:
-  - one improvement to docs
-  - one improvement to a template
-  - one improvement to evaluation rules
+| Day | Activity |
+|-----|----------|
+| **Monday** | `/plan-week` - Set goals for the week |
+| **Tue-Thu** | Build, learn, iterate |
+| **Friday** | `/retro` - Reflect on the week |
+| **End of Week** | `/evaluate` - Check progress signals |
 
 ---
 
-## Troubleshooting
+## How to Ask Claude for Help
 
-### Claude generated a folder literally named “...”
-This should not happen with the current `SETUP.md`. If it does:
-- delete it
-- re-run the generator prompt
-- ensure you pasted the latest `SETUP.md` content
+Use `/commands` to see all available commands:
 
-### Links in docs are broken
-- Re-run the generator prompt and instruct Claude:
-  - “Validate all relative links and fix any broken references.”
+| Command | Purpose |
+|---------|---------|
+| `/status` | View current progress and blockers |
+| `/plan-week` | Create weekly learning plan |
+| `/start-week` | Initialize week with templates |
+| `/ship-mvp` | Get guidance on shipping minimum viable product |
+| `/harden` | Add tests, docs, and polish |
+| `/publish` | Prepare for demo and write-up |
+| `/retro` | Run weekly retrospective |
+| `/evaluate` | Compute progress scores |
+| `/adapt-path` | Get path change recommendations |
+| `/add-best-practice` | Capture a learning insight |
+| `/debug-learning` | Troubleshoot learning blocks |
 
-### My hooks don’t run on Windows
-- Use WSL (recommended) or Git Bash
-- Or follow the manual fallback steps in `docs/hooks.md`
+See [docs/commands.md](docs/commands.md) for detailed documentation.
 
 ---
 
-## Repository Generator Prompt
+## Where Claude Capabilities Live
 
-In Claude Code, choose one:
+All Claude Code capabilities are in the `.claude/` folder:
 
-| Command | Description |
-|---------|-------------|
-| `Execute @SETUP.md` | Full curriculum for your level (uses STACK.md) |
-| `Execute @SETUP.md for @MY_STACK.md` | Custom stack (uses only checked items) |
+```
+.claude/
+├── agents/          # Advisory roles (planner, builder, reviewer, etc.)
+├── commands/        # Slash commands (/status, /plan-week, etc.)
+├── skills/          # Reusable playbooks (EDA, RAG, forecasting, etc.)
+├── hooks/           # Automation scripts (pre/post week, publish checks)
+├── memory/          # Learning state (profile, progress, decisions)
+├── mcp/             # Tool contracts and server stubs
+└── path-engine/     # Evaluation and adaptation scripts
+```
 
-Claude will ask for your learner level and generate the full learning OS into your fork.
+See [.claude/README.md](.claude/README.md) for full documentation.
 
-> Re-running the setup may overwrite generated docs/templates; `.claude/memory/*` should remain append-only
+---
+
+## Repository Structure
+
+```
+/
+├── README.md                    # This file
+├── CLAUDE.md                    # Claude Code instructions
+├── SETUP.md                     # Generator prompt
+├── STACK.md                     # Full tech stack (175 items)
+├── MY_STACK.md                  # Your custom stack selections
+├── .claude/                     # Claude capabilities
+├── docs/                        # System documentation
+├── stacks/                      # Tier definitions
+├── paths/Advanced/              # Your 12-month curriculum
+├── templates/                   # Project templates
+├── examples/                    # Reference implementations
+└── .github/                     # CI/CD and issue templates
+```
+
+---
+
+## Links
+
+- **Generator Prompt**: [SETUP.md](SETUP.md)
+- **Your Dashboard**: [paths/Advanced/README.md](paths/Advanced/README.md)
+- **Commands Guide**: [docs/commands.md](docs/commands.md)
+- **How to Use**: [docs/how-to-use.md](docs/how-to-use.md)
+- **Evaluation Rubric**: [docs/evaluation/rubric.md](docs/evaluation/rubric.md)
+
+---
+
+## License
+
+This project is open source. Fork it, customize it, and build your AI practitioner skills.
