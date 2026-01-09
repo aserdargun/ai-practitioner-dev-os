@@ -1,0 +1,26 @@
+{
+  "level": "beginner",
+  "goals": [
+    "Build a portfolio of AI/ML projects",
+    "Develop practical data science skills",
+    "Transition to an AI practitioner role"
+  ],
+  "constraints": {
+    "hours_per_week": 10,
+    "preferred_schedule": "flexible",
+    "timezone": "UTC"
+  },
+  "learning_style": {
+    "prefers": ["hands-on projects", "visual learning", "incremental progress"],
+    "challenges": ["time management", "staying consistent"]
+  },
+  "background": {
+    "technical_level": "beginner",
+    "prior_experience": [],
+    "strongest_skills": [],
+    "skills_to_develop": ["Python", "Data Analysis", "Machine Learning Basics"]
+  },
+  "start_date": "2026-01-01",
+  "target_completion": "2026-12-31",
+  "tier_scope": ["tier-1"]
+}

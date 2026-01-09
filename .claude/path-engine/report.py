@@ -1,0 +1,234 @@
+#!/usr/bin/env python3
+"""
+Generate tracker report from memory files.
+
+Updates paths/beginner/tracker.md with:
+- Current progress summary
+- Completed milestones
+- Active tasks
+- Evaluation snapshot
+
+Usage:
+    python report.py [--preview] [--output FILE]
+
+Note: This script uses Python stdlib only.
+      tracker.md is a derived artifact - can be regenerated anytime.
+"""
+
+import argparse
+import json
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+# Import from evaluate
+from evaluate import run_evaluation, load_jsonl, load_json
+
+
+# Constants
+SCRIPT_DIR = Path(__file__).parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
+MEMORY_DIR = REPO_ROOT / ".claude" / "memory"
+PATHS_DIR = REPO_ROOT / "paths" / "beginner"
+TRACKER_PATH = PATHS_DIR / "tracker.md"
+
+
+def get_current_month() -> int:
+    """Estimate current month based on progress."""
+    progress = load_jsonl(MEMORY_DIR / "progress_log.jsonl")
+
+    # Find latest month reference
+    max_month = 1
+    for event in progress:
+        month = event.get("month", 0)
+        if month > max_month:
+            max_month = month
+
+    return max_month
+
+
+def get_completed_weeks(progress: list[dict]) -> list[dict]:
+    """Get list of completed weeks."""
+    completed = []
+    for event in progress:
+        if event.get("event") == "week_completed":
+            completed.append({
+                "month": event.get("month", 0),
+                "week": event.get("week", 0),
+                "rating": event.get("rating", 0),
+                "timestamp": event.get("timestamp", "")
+            })
+    return sorted(completed, key=lambda x: (x["month"], x["week"]))
+
+
+def get_recent_tasks(progress: list[dict], limit: int = 10) -> list[dict]:
+    """Get recent task completions."""
+    tasks = []
+    for event in reversed(progress):
+        if event.get("event") == "task_completed":
+            tasks.append({
+                "task": event.get("task", "Unknown task"),
+                "timestamp": event.get("timestamp", "")
+            })
+            if len(tasks) >= limit:
+                break
+    return tasks
+
+
+def generate_tracker_content(evaluation: dict, progress: list[dict], profile: dict) -> str:
+    """Generate tracker markdown content."""
+    current_month = get_current_month()
+    completed_weeks = get_completed_weeks(progress)
+    recent_tasks = get_recent_tasks(progress)
+
+    # Build content
+    lines = [
+        "# Learning Tracker",
+        "",
+        f"**Level**: {profile.get('level', 'Beginner').capitalize()}",
+        f"**Current Month**: {current_month}",
+        f"**Last Updated**: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        "",
+        "---",
+        "",
+        "## Progress Overview",
+        "",
+    ]
+
+    # Evaluation snapshot
+    dims = evaluation["dimensions"]
+    overall = evaluation["overall_score"]
+
+    lines.extend([
+        f"**Overall Score**: {overall}/100",
+        "",
+        "| Dimension | Score | Status |",
+        "|-----------|-------|--------|",
+    ])
+
+    for name, data in dims.items():
+        score = data["score"]
+        status = "On Track" if score >= 60 else "Needs Attention" if score >= 40 else "At Risk"
+        lines.append(f"| {name.capitalize()} | {score}/100 | {status} |")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## Completed Weeks",
+        "",
+    ])
+
+    if completed_weeks:
+        lines.append("| Month | Week | Rating | Date |")
+        lines.append("|-------|------|--------|------|")
+        for week in completed_weeks[-10:]:  # Last 10 weeks
+            date = week["timestamp"][:10] if week["timestamp"] else "N/A"
+            lines.append(f"| {week['month']} | {week['week']} | {'⭐' * week.get('rating', 0)} | {date} |")
+    else:
+        lines.append("*No weeks completed yet. Run /start-week to begin!*")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## Recent Tasks",
+        "",
+    ])
+
+    if recent_tasks:
+        for task in recent_tasks:
+            date = task["timestamp"][:10] if task["timestamp"] else "N/A"
+            lines.append(f"- [x] {task['task']} ({date})")
+    else:
+        lines.append("*No tasks completed yet.*")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## Current Month Goals",
+        "",
+        f"See [month-{current_month:02d}/README.md](month-{current_month:02d}/README.md) for current goals.",
+        "",
+        "---",
+        "",
+        "## Quick Actions",
+        "",
+        "| Command | Description |",
+        "|---------|-------------|",
+        "| `/status` | Check current progress |",
+        "| `/plan-week` | Plan your week |",
+        "| `/evaluate` | Get detailed evaluation |",
+        "| `/adapt-path` | See adaptation proposals |",
+        "",
+        "---",
+        "",
+        "## Notes",
+        "",
+        "*This file is auto-generated by `report.py`. Memory files are the source of truth.*",
+        "",
+        f"*Last generated: {datetime.now().isoformat()}*",
+    ]
+
+    return "\n".join(lines)
+
+
+def generate_report(preview: bool = False, output_path: Path = None) -> str:
+    """Generate and optionally save the report."""
+    # Load data
+    progress = load_jsonl(MEMORY_DIR / "progress_log.jsonl")
+    profile = load_json(MEMORY_DIR / "learner_profile.json")
+
+    # Run evaluation
+    evaluation = run_evaluation()
+
+    # Generate content
+    content = generate_tracker_content(evaluation, progress, profile)
+
+    if preview:
+        return content
+
+    # Determine output path
+    target = output_path or TRACKER_PATH
+
+    # Ensure directory exists
+    target.parent.mkdir(parents=True, exist_ok=True)
+
+    # Write file
+    with open(target, "w") as f:
+        f.write(content)
+
+    return content
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate tracker report")
+    parser.add_argument("--preview", action="store_true", help="Preview without saving")
+    parser.add_argument("--output", type=str, help="Output file path")
+    args = parser.parse_args()
+
+    output_path = Path(args.output) if args.output else None
+
+    content = generate_report(preview=args.preview, output_path=output_path)
+
+    if args.preview:
+        print("PREVIEW (not saved):")
+        print("=" * 60)
+        print(content)
+        print("=" * 60)
+        print()
+        print("Run without --preview to save to tracker.md")
+    else:
+        target = output_path or TRACKER_PATH
+        print(f"Report generated: {target}")
+        print()
+        print("Summary:")
+        # Print first few lines
+        for line in content.split("\n")[:15]:
+            print(f"  {line}")
+        print("  ...")
+
+
+if __name__ == "__main__":
+    main()
