@@ -1,0 +1,10 @@
+{"id": "test_001", "input": "What is 2 + 2?", "expected": "4", "metadata": {"category": "math", "difficulty": "easy"}}
+{"id": "test_002", "input": "What is the capital of France?", "expected": "Paris", "metadata": {"category": "geography", "difficulty": "easy"}}
+{"id": "test_003", "input": "Translate 'hello' to Spanish", "expected": "hola", "metadata": {"category": "translation", "difficulty": "easy"}}
+{"id": "test_004", "input": "What is 15 * 7?", "expected": "105", "metadata": {"category": "math", "difficulty": "medium"}}
+{"id": "test_005", "input": "What is the largest planet in our solar system?", "expected": "Jupiter", "metadata": {"category": "science", "difficulty": "easy"}}
+{"id": "test_006", "input": "What year did World War II end?", "expected": "1945", "metadata": {"category": "history", "difficulty": "medium"}}
+{"id": "test_007", "input": "What is H2O commonly known as?", "expected": "water", "metadata": {"category": "science", "difficulty": "easy"}}
+{"id": "test_008", "input": "Who wrote Romeo and Juliet?", "expected": "Shakespeare", "metadata": {"category": "literature", "difficulty": "easy"}}
+{"id": "test_009", "input": "What is the square root of 144?", "expected": "12", "metadata": {"category": "math", "difficulty": "medium"}}
+{"id": "test_010", "input": "What is the chemical symbol for gold?", "expected": "Au", "metadata": {"category": "science", "difficulty": "medium"}}

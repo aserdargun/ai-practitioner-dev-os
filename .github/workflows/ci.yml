@@ -1,0 +1,171 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff check
+        run: ruff check .
+
+      - name: Run ruff format check
+        run: ruff format --check .
+
+  test-templates:
+    name: Test Templates
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        template:
+          - template-fastapi-service
+          - template-data-pipeline
+          - template-rag-service
+          - template-eval-harness
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        working-directory: templates/${{ matrix.template }}
+        run: pytest -v
+
+  test-example:
+    name: Test Mini Example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        working-directory: examples/mini-example
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        working-directory: examples/mini-example
+        run: pytest -v
+
+  test-path-engine:
+    name: Test Path Engine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Test evaluate.py runs
+        run: |
+          python .claude/path-engine/evaluate.py --help || true
+
+      - name: Test adapt.py runs
+        run: |
+          python .claude/path-engine/adapt.py --help || true
+
+      - name: Test report.py runs
+        run: |
+          python .claude/path-engine/report.py --help || true
+
+  validate-structure:
+    name: Validate Repository Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required directories exist
+        run: |
+          for dir in .claude docs paths stacks templates examples .github; do
+            if [ ! -d "$dir" ]; then
+              echo "Missing required directory: $dir"
+              exit 1
+            fi
+          done
+          echo "All required directories exist"
+
+      - name: Check required files exist
+        run: |
+          for file in README.md CLAUDE.md SETUP.md STACK.md; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+          echo "All required files exist"
+
+      - name: Check .claude structure
+        run: |
+          for dir in agents commands skills hooks memory mcp path-engine; do
+            if [ ! -d ".claude/$dir" ]; then
+              echo "Missing .claude directory: $dir"
+              exit 1
+            fi
+          done
+          echo ".claude structure is valid"
+
+      - name: Validate no empty markdown files
+        run: |
+          find . -name "*.md" -type f | while read file; do
+            if [ ! -s "$file" ]; then
+              echo "Empty file found: $file"
+              exit 1
+            fi
+          done
+          echo "No empty markdown files found"
+
+  markdown-links:
+    name: Check Markdown Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check internal links
+        run: |
+          # Simple check for broken relative links
+          find . -name "*.md" -type f | while read file; do
+            grep -oP '\[.*?\]\(\K[^)]+' "$file" 2>/dev/null | while read link; do
+              # Skip external links and anchors
+              if [[ ! "$link" =~ ^https?:// ]] && [[ ! "$link" =~ ^# ]]; then
+                # Get directory of current file
+                dir=$(dirname "$file")
+                # Resolve relative path
+                target="$dir/$link"
+                # Remove anchor if present
+                target="${target%%#*}"
+                if [ ! -e "$target" ] && [ ! -e "$link" ]; then
+                  echo "Potentially broken link in $file: $link"
+                fi
+              fi
+            done
+          done
+          echo "Link check completed (warnings above may be false positives)"

@@ -1,0 +1,29 @@
+{
+  "name": "Learner",
+  "level": "advanced",
+  "started": "2026-01-01",
+  "current_month": 1,
+  "goals": [
+    "Master AI/ML engineering practices",
+    "Build production-ready systems",
+    "Deploy at scale with Kubernetes",
+    "Implement advanced ML techniques"
+  ],
+  "constraints": {
+    "hours_per_week": 15,
+    "preferred_days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "timezone": "UTC",
+    "notes": "Adjust these values to match your actual availability"
+  },
+  "preferences": {
+    "learning_style": "hands-on",
+    "feedback_frequency": "weekly",
+    "project_preference": "real-world applications"
+  },
+  "tier_scope": {
+    "tier_1": true,
+    "tier_2": true,
+    "tier_3": true,
+    "total_items": 175
+  }
+}
