@@ -1,0 +1,5 @@
+{"query": "What is RAG?", "expected_context_keywords": ["retrieval", "augmented", "generation"], "expected_answer_contains": ["retrieval", "context"], "category": "definition"}
+{"query": "How does document chunking work?", "expected_context_keywords": ["chunk", "split", "overlap"], "expected_answer_contains": ["chunk", "text"], "category": "technical"}
+{"query": "What embedding models can be used?", "expected_context_keywords": ["embedding", "vector", "model"], "expected_answer_contains": ["embedding"], "category": "technical"}
+{"query": "How to evaluate RAG systems?", "expected_context_keywords": ["evaluation", "metrics", "quality"], "expected_answer_contains": ["evaluate", "test"], "category": "evaluation"}
+{"query": "What are the benefits of RAG over fine-tuning?", "expected_context_keywords": ["fine-tuning", "training", "update"], "expected_answer_contains": ["update", "knowledge"], "category": "comparison"}

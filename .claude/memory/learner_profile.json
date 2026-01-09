@@ -1,0 +1,36 @@
+{
+  "level": "intermediate",
+  "created_at": "2026-01-01T00:00:00Z",
+  "updated_at": "2026-01-01T00:00:00Z",
+  "goals": [
+    "Master machine learning fundamentals and production deployment",
+    "Build practical AI/ML projects for portfolio",
+    "Develop skills in MLOps and cloud platforms",
+    "Learn LLM application development (RAG, agents)"
+  ],
+  "constraints": {
+    "hours_per_week": 10,
+    "preferred_times": ["evenings", "weekends"],
+    "timezone": "UTC",
+    "other": []
+  },
+  "preferences": {
+    "learning_style": "project-based",
+    "communication": "direct",
+    "feedback_frequency": "weekly",
+    "challenge_level": "moderate-stretch"
+  },
+  "background": {
+    "programming_experience": "intermediate",
+    "ml_experience": "beginner",
+    "domain_expertise": [],
+    "prior_education": []
+  },
+  "tier_scope": {
+    "tier_1": true,
+    "tier_2": true,
+    "tier_3": false
+  },
+  "technologies_focus": [],
+  "notes": "Profile initialized for Intermediate level. Update with your specific goals and constraints."
+}

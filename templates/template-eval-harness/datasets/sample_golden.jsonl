@@ -1,0 +1,10 @@
+{"input": "What is 2 + 2?", "expected": "4", "category": "math"}
+{"input": "What is the capital of France?", "expected": "Paris", "category": "geography"}
+{"input": "Who wrote Romeo and Juliet?", "expected": "William Shakespeare", "category": "literature"}
+{"input": "What is the chemical symbol for water?", "expected": "H2O", "category": "science"}
+{"input": "What year did World War II end?", "expected": "1945", "category": "history"}
+{"input": "What is the largest planet in our solar system?", "expected": "Jupiter", "category": "science"}
+{"input": "What programming language is known for its use in data science?", "expected": "Python", "category": "technology"}
+{"input": "What is the square root of 144?", "expected": "12", "category": "math"}
+{"input": "Who painted the Mona Lisa?", "expected": "Leonardo da Vinci", "category": "art"}
+{"input": "What is the speed of light in vacuum?", "expected": "299,792,458 meters per second", "category": "science"}
