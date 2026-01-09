@@ -1,12 +1,25 @@
 # SETUP.md — Repository Generator Prompt (Claude Code)
 
 ## How to use this prompt
-1) First, customize your tech stack in `STACK.md` by checking `[x]` the technologies you want to learn (optional).
-2) In **Claude Code** (with repo integration enabled), while connected to your fork, enter:
-   ```
-   Execute @SETUP.md for @STACK.md
-   ```
-3) Claude will ask you **one** question for `{{LEARNER_LEVEL}}`, then generate the entire repository structure customized to your selected tech stack.
+
+### Option A: Full Curriculum
+In **Claude Code**, run:
+```
+Execute @SETUP.md
+```
+Claude asks your level, then uses `STACK.md` (all items for your level's tiers).
+
+### Option B: Custom Stack
+1) Edit `MY_STACK.md` - check `[x]` only technologies you want
+2) In **Claude Code**, run:
+```
+Execute @SETUP.md for @MY_STACK.md
+```
+
+Claude will ask **one** question: "What is the learner level? (Beginner / Intermediate / Advanced)"
+- **Beginner**: Uses only Tier 1 items
+- **Intermediate**: Uses Tier 1 + Tier 2 items
+- **Advanced**: Uses Tier 1 + Tier 2 + Tier 3 items
 
 > Important: This prompt is meant to be executed by Claude Code. It is not a human checklist.
 
@@ -31,10 +44,19 @@ IMPORTANT: Before you generate anything, ask me ONE question:
 - "What is the learner level? (Beginner / Intermediate / Advanced)"
 Use the answer to set {{LEARNER_LEVEL}} everywhere.
 
-IMPORTANT: Read the `STACK.md` file to get the user's customized tech stack.
-- If items are checked `[x]`, include them in the curriculum.
-- If no items are checked, use all items for the selected learner level tier(s).
-- The checked items override the default curriculum for each month.
+IMPORTANT: Read the stack file provided by the user (`STACK.md` or `MY_STACK.md`).
+
+**Stack Selection Rules:**
+
+| Learner Level | If items checked `[x]` | If NO items checked (STACK.md default) |
+|---------------|------------------------|----------------------------------------|
+| **Beginner** | Use checked Tier 1 items only | Use ALL Tier 1 items (53 items) |
+| **Intermediate** | Use checked Tier 1 + Tier 2 items | Use ALL Tier 1 + Tier 2 items (148 items) |
+| **Advanced** | Use checked items from all tiers | Use ALL items from all tiers (175 items) |
+
+- When items are checked: include ONLY those checked items that match the learner's tier scope
+- When NO items are checked: include ALL items from the learner's tier scope
+- The tier scope is cumulative: Beginner=T1, Intermediate=T1+T2, Advanced=T1+T2+T3
 
 Hard requirements
 - Markdown-first documentation.

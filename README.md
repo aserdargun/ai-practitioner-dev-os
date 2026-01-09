@@ -8,7 +8,7 @@ It contains a generator prompt (`SETUP.md`), a tech stack selector (`STACK.md`),
 
 ## What you'll get after generation
 
-When you run `Execute @SETUP.md for @STACK.md` in Claude Code, it will generate a complete repo with:
+When you run the generator prompt in Claude Code, it will generate a complete repo with:
 
 - A `.claude/` folder containing:
   - **agents** (planner/builder/reviewer/evaluator/coach/researcher)
@@ -45,6 +45,31 @@ When you run `Execute @SETUP.md for @STACK.md` in Claude Code, it will generate 
 - Windows: use **WSL** (recommended) or **Git Bash** for running `.sh` hooks
 
 ---
+
+## Two Ways to Generate Your Learning Path
+
+### Option A: Full Curriculum (Recommended for most learners)
+In Claude Code, run:
+```
+Execute @SETUP.md
+```
+Claude asks your level (Beginner/Intermediate/Advanced), then generates the **full curriculum** for your level's tiers using `STACK.md`.
+
+### Option B: Custom Stack
+1. Edit `MY_STACK.md` - check `[x]` only the technologies you want to learn
+2. In Claude Code, run:
+```
+Execute @SETUP.md for @MY_STACK.md
+```
+
+### Tier Scope by Level (Cumulative)
+| Level | Tiers Included | Scope |
+|-------|----------------|-------|
+| **Beginner** | Tier 1 only | Foundation (53 items) |
+| **Intermediate** | Tier 1 + Tier 2 | Foundation + Shipping (148 items) |
+| **Advanced** | Tier 1 + Tier 2 + Tier 3 | All tiers (175 items) |
+
+---
 [Watch the demo setup](https://github.com/user-attachments/assets/18cf45e2-aeb4-4580-b3b5-ada4db0b9513)
 ---
 
@@ -58,33 +83,33 @@ In Claude Code:
 - Connect to GitHub
 - Select your forked repo: **`ai-practitioner-dev-os`**
 
-### 3) Customize your tech stack (optional)
-Open `STACK.md` and check `[x]` the technologies you want to include in your learning path:
-- Review each tier (Tier 1 = Beginner, Tier 2 = Intermediate, Tier 3 = Advanced)
-- Check the items you want to focus on
-- Save your changes
+### 3) Run the generator prompt
+Choose one of the two options:
 
-> This step is optional. If you skip it, Claude will use the default curriculum based on your learner level.
-
-### 4) Run the generator prompt
-In Claude Code, enter:
-
+**Option A: Full Curriculum** (use all items for your level)
 ```
-Execute @SETUP.md for @STACK.md
+Execute @SETUP.md
+```
+
+**Option B: Custom Stack** (use only selected items)
+1. Edit `MY_STACK.md` and check `[x]` the technologies you want
+2. Run:
+```
+Execute @SETUP.md for @MY_STACK.md
 ```
 
 Claude will ask **one question** first:
 - "What is the learner level? (Beginner / Intermediate / Advanced)"
 
 After you answer, Claude will generate:
-- the full folder tree customized to your selected tech stack
+- the full folder tree customized to your level/stack
 - all documentation
 - scripts and templates
 - CI workflow
 
 > Tip: Let Claude commit changes directly to your fork (or create a PR if you prefer review).
 
-### 5) Clone your generated repo locally
+### 4) Clone your generated repo locally
 After generation completes on GitHub:
 
 ```bash
@@ -92,7 +117,7 @@ git clone https://github.com/<your-username>/ai-practitioner-dev-os.git
 cd ai-practitioner-dev-os
 ```
 
-### 6) Open in VS Code
+### 5) Open in VS Code
 ```bash
 code .
 ```
@@ -256,19 +281,13 @@ This should not happen with the current `SETUP.md`. If it does:
 
 ## Repository Generator Prompt
 
-In Claude Code, enter:
+In Claude Code, choose one:
 
-```
-Execute @SETUP.md for <YOUR_LEVEL>
-```
-or
-```
-Execute @SETUP.md for @STACK.md
-```
-or
-```
-Execute @SETUP.md
-```
-Claude will ask you for the learner level and generate the full learning OS into your fork, customized to the technologies you selected in `STACK.md`.
+| Command | Description |
+|---------|-------------|
+| `Execute @SETUP.md` | Full curriculum for your level (uses STACK.md) |
+| `Execute @SETUP.md for @MY_STACK.md` | Custom stack (uses only checked items) |
+
+Claude will ask for your learner level and generate the full learning OS into your fork.
 
 > Re-running the setup may overwrite generated docs/templates; `.claude/memory/*` should remain append-only

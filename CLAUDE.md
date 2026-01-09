@@ -8,10 +8,16 @@ This is an **AI Practitioner Booster 2026** - a generator repository that create
 
 ## How Generation Works
 
-1. User customizes `STACK.md` by checking `[x]` desired technologies
-2. User runs in Claude Code: `Execute @SETUP.md for @STACK.md`
-3. Claude asks for learner level (Beginner/Intermediate/Advanced)
-4. Claude generates the full repository structure into the fork
+### Option A: Full Curriculum
+1. User runs: `Execute @SETUP.md`
+2. Claude asks for learner level
+3. Claude uses `STACK.md` (all items unchecked = full curriculum for selected tiers)
+
+### Option B: Custom Stack
+1. User edits `MY_STACK.md`, checking `[x]` desired technologies
+2. User runs: `Execute @SETUP.md for @MY_STACK.md`
+3. Claude asks for learner level
+4. Claude uses only checked items from `MY_STACK.md`
 
 ## Learner Levels (Pace-Based, Cumulative)
 
@@ -24,7 +30,8 @@ This is an **AI Practitioner Booster 2026** - a generator repository that create
 | File | Purpose |
 |------|---------|
 | `SETUP.md` | Generator prompt - the canonical source for repo generation |
-| `STACK.md` | Tech stack selector (175 items across 3 tiers) |
+| `STACK.md` | Default tech stack (all 175 items unchecked - full curriculum) |
+| `MY_STACK.md` | Custom tech stack (user checks desired items) |
 | `README.md` | User-facing documentation for setup and usage |
 
 ## After Generation - Expected Structure

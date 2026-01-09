@@ -315,10 +315,19 @@ Use this checklist to plan which technologies to include in your learning path. 
 
 ## How to Use
 
-1. Review each tier and check `[x]` the technologies you want to include in your learning plan
-2. Prioritize based on your learner level:
-   - **Beginner**: Focus on Tier 1 items
-   - **Intermediate**: Tier 1 + selected Tier 2 items
-   - **Advanced**: All tiers
-3. Use this as a reference when planning monthly goals
-4. Update checkboxes as you complete learning each technology
+This is your **custom stack file**. Items checked `[x]` will be included in your curriculum.
+
+**To generate with your selections:**
+```
+Execute @SETUP.md for @MY_STACK.md
+```
+
+**Tier scope by level (only checked items within scope are used):**
+
+| Your Level | Tiers included |
+|------------|----------------|
+| Beginner | Only checked Tier 1 items |
+| Intermediate | Checked Tier 1 + Tier 2 items |
+| Advanced | Checked items from all tiers |
+
+**Tip:** If you want the full default curriculum instead, run `Execute @SETUP.md` (uses STACK.md with all items).
